@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#176b5b" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Guide Me" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>Guideme</title>
+    <style>
+      #translation-preloader {
+        display: none;
+      }
+
+      html.translation-pending #translation-preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 20000;
+        display: grid;
+        place-items: center;
+        background: transparent;
+        -webkit-backdrop-filter: blur(7px);
+        backdrop-filter: blur(7px);
+      }
+
+      #translation-preloader img {
+        width: 120px;
+        height: 120px;
+        object-fit: contain;
+      }
+    </style>
+    <script>
+      const savedTranslation = document.cookie
+        .split("; ")
+        .find((cookie) => cookie.startsWith("googtrans="))
+        ?.split("=")[1]
+        ?.split("/")
+        .filter(Boolean)
+        .at(-1);
+      if (["ta", "ml", "te", "kn", "hi"].includes(savedTranslation)) {
+        document.documentElement.classList.add("translation-pending");
+        document.documentElement.dataset.pendingLanguage = savedTranslation;
+      }
+    </script>
+  </head>
+  <body>
+    <div id="translation-preloader" role="status" aria-label="Loading translation">
+      <img src="/assets/Load_Sandclock.gif" alt="Loading" />
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
