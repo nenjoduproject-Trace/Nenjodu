@@ -1,35 +1,42 @@
 import app from "./app";
 import pool from "./config/database";
-import questionRoutes from "./routes/question.routes";
 
-const PORT = Number(process.env.PORT || 5000);
+const PORT = Number(process.env.PORT) || 5000;
 
-async function startServer() {
+const server = app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server listening on 0.0.0.0:${PORT}`);
+});
 
-  try {
+server.on("error", (error) => {
+  console.error("Unable to start HTTP server:", error);
+  process.exit(1);
+});
 
-    await pool.query("SELECT NOW()");
+async function checkDatabaseWithRetry(): Promise<void> {
+  const maxAttempts = 5;
 
-    console.log("serviceTS::::::::");
-    console.log("Database connection successful");
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      await pool.query("SELECT NOW()");
+      console.log("Database connection successful");
+      return;
+    } catch (error) {
+      if (attempt === maxAttempts) {
+        console.error(
+          `Unable to connect to PostgreSQL after ${maxAttempts} attempts. The HTTP server remains available; database-backed requests may fail.`,
+          error,
+        );
+        return;
+      }
 
-    app.listen(PORT, () => {
-
-      console.log(
-        `Server running at http://localhost:${PORT}`
+      const delay = Math.min(1000 * 2 ** (attempt - 1), 8000);
+      console.error(
+        `PostgreSQL connection attempt ${attempt} failed; retrying in ${delay}ms.`,
+        error,
       );
-
-    });
-
-  } catch (error) {
-
-    console.error(
-      "Unable to connect to PostgreSQL:",
-      error
-    );
-
-    process.exit(1);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
   }
 }
 
-startServer();
+void checkDatabaseWithRetry();

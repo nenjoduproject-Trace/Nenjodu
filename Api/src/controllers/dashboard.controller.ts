@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import pool from "../config/database";
+import pool, { isDatabaseUnavailable } from "../config/database";
 
 export async function getGeneralDoubts(_req: Request, res: Response) {
   try {
@@ -15,9 +15,12 @@ export async function getGeneralDoubts(_req: Request, res: Response) {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({
+    const unavailable = isDatabaseUnavailable(error);
+    res.status(unavailable ? 503 : 500).json({
       success: false,
-      message: "Failed to load general doubts",
+      message: unavailable
+        ? "Database is currently unavailable. Please try again later."
+        : "Failed to load general doubts",
     });
   }
 }

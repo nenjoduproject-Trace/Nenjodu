@@ -1,6 +1,6 @@
 
 import { Request, Response } from "express";
-import pool from "../config/database";
+import pool, { isDatabaseUnavailable } from "../config/database";
 import {
   translateQuestionToEnglish,
   translateQuestionToLanguage,
@@ -192,11 +192,14 @@ export async function getCategories(
   } catch (error) {
     console.error("Question search error:", error);
 
-    return res.status(500).json({
+    const unavailable = isDatabaseUnavailable(error);
+    return res.status(unavailable ? 503 : 500).json({
         success: false,
-        message: error instanceof Error
-        ? error.message
-        : "Unknown database error",
+        message: unavailable
+          ? "Database is currently unavailable. Please try again later."
+          : error instanceof Error
+            ? error.message
+            : "Unknown database error",
     });
     }
 }

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import pool from "../config/database";
+import pool, { isDatabaseUnavailable } from "../config/database";
 
 export async function getCategories(req: Request,res: Response) {
   try {
@@ -11,7 +11,13 @@ export async function getCategories(req: Request,res: Response) {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({success: false,message: "Failed to load categories"});
+    const unavailable = isDatabaseUnavailable(error);
+    res.status(unavailable ? 503 : 500).json({
+      success: false,
+      message: unavailable
+        ? "Database is currently unavailable. Please try again later."
+        : "Failed to load categories",
+    });
   }
 }
 
@@ -25,6 +31,12 @@ export async function getBeliefList(req: Request,res: Response) {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({success: false,message: "Failed to load belief books",});
+    const unavailable = isDatabaseUnavailable(error);
+    res.status(unavailable ? 503 : 500).json({
+      success: false,
+      message: unavailable
+        ? "Database is currently unavailable. Please try again later."
+        : "Failed to load belief books",
+    });
   }
 }
