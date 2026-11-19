@@ -8,18 +8,10 @@ function getSelectedLanguage() {
     .split("; ")
     .find((cookie) => cookie.startsWith("googtrans="));
 
-  return translationCookie?.split("/").filter(Boolean).at(-1) ?? "en";
+  return translationCookie?.split("/").filter(Boolean).at(-1) ?? "ta";
 }
 
 const knowledgeVideos = [
-  {
-    id: "RJDRSD7-gm2",
-    url: "https://youtu.be/vjCJGqZPD4c?si=Be_WFcuBRRXlt6Jb",
-  },
-  {
-    id: "RJDRSD7-gm1",
-    url: "https://youtu.be/S6nxdLO0ido?si=jgP5-wFxtD8DJfBC",
-  },
   {
     id: "RJDRSD7-gm0",
     url: "https://youtu.be/RJDRSD7-gm0?si=arnixdxx2tUkRGNc",

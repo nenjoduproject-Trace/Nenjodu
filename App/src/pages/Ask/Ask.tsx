@@ -45,7 +45,7 @@ function getPageLanguage(): string {
   const translationCookie = document.cookie
     .split("; ")
     .find((cookie) => cookie.startsWith("googtrans="));
-  return translationCookie?.split("/").filter(Boolean).at(-1) ?? "en";
+  return translationCookie?.split("/").filter(Boolean).at(-1) ?? "ta";
 }
 
 const questionPlaceholders: Record<string, string> = {

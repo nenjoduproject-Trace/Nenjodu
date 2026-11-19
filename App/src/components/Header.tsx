@@ -34,7 +34,12 @@ function getSavedLanguage() {
     .find((cookie) => cookie.startsWith("googtrans="));
   const languageCode = translationCookie?.split("=")[1]?.split("/").filter(Boolean).at(-1);
 
-  return languages.find(({ code }) => code === languageCode)?.code ?? "en";
+  if (languageCode) {
+    return languages.find(({ code }) => code === languageCode)?.code ?? "ta";
+  }
+
+  document.cookie = "googtrans=/en/ta; path=/; max-age=31536000";
+  return "ta";
 }
 
 function notifyLanguageChange(languageCode: string) {

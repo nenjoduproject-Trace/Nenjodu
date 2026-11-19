@@ -11,7 +11,8 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
-    return localStorage.getItem("nenjodu-theme") === "dark" ? "dark" : "light";
+    const savedTheme = localStorage.getItem("nenjodu-theme");
+    return savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
   });
 
   useEffect(() => {

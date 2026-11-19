@@ -13,7 +13,7 @@ function getSelectedLanguage() {
     .split("; ")
     .find((cookie) => cookie.startsWith("googtrans="));
 
-  return translationCookie?.split("/").filter(Boolean).at(-1) ?? "en";
+  return translationCookie?.split("/").filter(Boolean).at(-1) ?? "ta";
 }
 
 export default function Belief() {
