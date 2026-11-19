@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
-  faDroplet,
   faHandsBubbles,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";

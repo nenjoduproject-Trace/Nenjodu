@@ -1,4 +1,4 @@
-import API_URL from "./api";
+import apiUrl from "./api";
 
 export interface GeneralDoubt {
   id: number | string;
@@ -7,7 +7,7 @@ export interface GeneralDoubt {
 }
 
 export async function getGeneralDoubts(): Promise<GeneralDoubt[]> {
-  const response = await fetch(`${API_URL}/dashboard/general-doubts`);
+  const response = await fetch(apiUrl("/dashboard/general-doubts"));
 
   if (!response.ok) {
     throw new Error("Failed to load essential questions and facts");

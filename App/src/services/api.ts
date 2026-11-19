@@ -1,5 +1,11 @@
-const API_URL =
-  import.meta.env.VITE_API_URL ||
-  "http://localhost:5000/api";
+const API_URL = import.meta.env.VITE_API_URL?.trim().replace(/\/+$/, "");
 
-export default API_URL;
+export default function apiUrl(path: string): string {
+  if (!API_URL) {
+    throw new Error(
+      "VITE_API_URL is not configured. Set it to the Render API base URL, including /api.",
+    );
+  }
+
+  return `${API_URL}/${path.replace(/^\/+/, "")}`;
+}

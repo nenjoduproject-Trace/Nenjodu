@@ -1,5 +1,5 @@
 
-import API_URL from "./api";
+import apiUrl from "./api";
 
 export interface Answer {
   id: number;
@@ -29,7 +29,7 @@ export async function translateQuestionForDisplay(
   language: string,
   sourceLanguage = "autodetect",
 ): Promise<string> {
-  const response = await fetch(`${API_URL}/question/display-translation`, {
+  const response = await fetch(apiUrl("/question/display-translation"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export async function getAnswer(
   question: string,
   expectedLanguage: string,
 ): Promise<Answer | null> {
-  const translationResponse = await fetch(`${API_URL}/question/translate`, {
+  const translationResponse = await fetch(apiUrl("/question/translate"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -101,7 +101,7 @@ export async function getAnswer(
   }
 
   const englishQuestion = translationResult.data.question;
-  const response = await fetch(`${API_URL}/question`, {
+  const response = await fetch(apiUrl("/question"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,4 +1,4 @@
-import API_URL from "./api";
+import apiUrl from "./api";
 import { normalizeLineBreaks } from "../utils/contentText";
 
 export interface Category {
@@ -19,7 +19,7 @@ export interface BeliefBooks {
 }
 
 export async function getCategories(): Promise<Category[]> {
-  const response = await fetch(`${API_URL}/categories`);
+  const response = await fetch(apiUrl("/categories"));
   if (!response.ok) {
     throw new Error("Failed to load categories");
   }
@@ -33,7 +33,7 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function getBeliefList(): Promise<BeliefBooks[]> {
-  const response = await fetch(`${API_URL}/categories/belieflist`);
+  const response = await fetch(apiUrl("/categories/belieflist"));
   if (!response.ok) {
     throw new Error("Failed to load belief books");
   }

@@ -1,32 +1,18 @@
-# React + TypeScript + Vite
+# Frontend deployment
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## Vercel
 
-Currently, two official plugins are available:
+Configure the Vercel project to deploy the frontend directory:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Root Directory:** `App`
+- **Framework Preset:** Vite
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
 
-## React Compiler
+`vercel.json` sets the build command/output directory and rewrites frontend routes to `index.html`, so refreshing a React Router route continues to serve the SPA.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Set `VITE_API_URL` in the Vercel project's Production environment (and Preview if used) to the Render API base URL, including `/api`, for example the service URL followed by `/api`. This variable is embedded at build time, so redeploy after changing it. The frontend displays independently of the API, but API-backed features report a configuration error if this variable is missing.
 
-## Expanding the Oxlint configuration
+For local development, create `.env` from `.env.example` and set `VITE_API_URL` to the local API base URL.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+The backend remains a separate Render service in `Api`; its build and start instructions are in `../Api/README.md`.
